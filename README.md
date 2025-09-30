@@ -18,25 +18,36 @@ The primary goal of this project is to:
 
 ## 📊 Dataset
 
-The dataset used in this project contains various health-related features including:
+The dataset used in this project contains **70,000 records** with **19 features** including various health-related indicators and lifestyle factors:
 
-### Features
-- **Age**: Age of the patient
-- **Sex**: Gender of the patient (1 = male, 0 = female)
-- **Chest Pain Type**: Type of chest pain experienced (4 categories)
-- **Resting Blood Pressure**: Resting blood pressure in mm Hg
-- **Serum Cholesterol**: Serum cholesterol in mg/dl
-- **Fasting Blood Sugar**: Fasting blood sugar > 120 mg/dl (1 = true, 0 = false)
-- **Resting ECG**: Resting electrocardiographic results (values 0, 1, 2)
-- **Maximum Heart Rate**: Maximum heart rate achieved
-- **Exercise Induced Angina**: Exercise induced angina (1 = yes, 0 = no)
-- **ST Depression**: ST depression induced by exercise relative to rest
-- **Slope**: Slope of the peak exercise ST segment
-- **Number of Major Vessels**: Number of major vessels colored by fluoroscopy (0-3)
-- **Thalassemia**: Thalassemia type (3 = normal, 6 = fixed defect, 7 = reversible defect)
+### Features (Binary: 0 = No, 1 = Yes)
+- **Chest_Pain**: Presence of chest pain
+- **Shortness_of_Breath**: Difficulty breathing
+- **Fatigue**: Excessive tiredness
+- **Palpitations**: Irregular heartbeat sensations
+- **Dizziness**: Feeling lightheaded or dizzy
+- **Swelling**: Body swelling (especially legs/ankles)
+- **Pain_Arms_Jaw_Back**: Pain radiating to arms, jaw, or back
+- **Cold_Sweats_Nausea**: Cold sweats and nausea
+- **High_BP**: High blood pressure
+- **High_Cholesterol**: Elevated cholesterol levels
+- **Diabetes**: Diabetes diagnosis
+- **Smoking**: Smoking habit
+- **Obesity**: Obesity condition
+- **Sedentary_Lifestyle**: Inactive lifestyle
+- **Family_History**: Family history of heart disease
+- **Chronic_Stress**: Chronic stress condition
+- **Gender**: Gender (0 = Female, 1 = Male)
+- **Age**: Age in years (continuous variable)
 
 ### Target Variable
-- **Heart Disease**: Presence of heart disease (1 = disease, 0 = no disease)
+- **Heart_Risk**: Heart disease risk (0 = Low Risk, 1 = High Risk)
+
+### Dataset Characteristics
+- **Size**: 70,000 samples × 19 features
+- **Balance**: Perfectly balanced dataset (35,000 samples per class)
+- **Missing Values**: None (complete dataset)
+- **Data Types**: All features are numerical (float64)
 
 ## 🔧 Technologies Used
 
@@ -56,14 +67,11 @@ The dataset used in this project contains various health-related features includ
 4. **Train-Test Split**: Split data into training and testing sets
 
 ### Models Evaluated
-The project explores multiple machine learning algorithms:
-- **Logistic Regression**: Baseline linear model
-- **Decision Trees**: Non-linear tree-based model
-- **Random Forest**: Ensemble of decision trees
-- **Support Vector Machines (SVM)**: Kernel-based classification
-- **K-Nearest Neighbors (KNN)**: Instance-based learning
-- **Gradient Boosting**: Advanced ensemble technique
-- **Neural Networks**: Deep learning approach
+The project focuses on comparing two key machine learning algorithms:
+- **Logistic Regression**: Linear baseline model for binary classification
+- **Random Forest**: Ensemble method using multiple decision trees
+
+These models are chosen for their interpretability, performance, and complementary approaches to classification.
 
 ### Model Evaluation
 Models are evaluated using:
@@ -162,7 +170,7 @@ Feature importance analysis reveals the most significant predictors of heart dis
 HeartDiseaseRiskPrediction/
 │
 ├── data/                      # Dataset files
-│   └── heart_disease.csv      # Heart disease dataset
+│   └── heart_disease_risk_dataset_earlymed.csv  # Heart disease risk dataset
 │
 ├── notebooks/                 # Jupyter notebooks
 │   ├── EDA.ipynb             # Exploratory Data Analysis
