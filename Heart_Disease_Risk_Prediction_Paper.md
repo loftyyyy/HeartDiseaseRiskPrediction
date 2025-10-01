@@ -58,21 +58,15 @@ The dataset exhibited exceptional data quality with no missing values across all
 
 #### 2.3.2 Handling Outliers
 
-Outlier analysis was conducted to identify potential data quality issues:
+To avoid distorted analyses and models, we used a statistical approach known as the Interquartile Range (IQR) method to identify these outliers. IQR is a method that aids in identifying outliers in the data that are distributed continuously. IQR is the difference between the first and third quartiles (IQR = Q3-Q1). The researchers identified the IQR of each numerical column. We then established upper and lower bounds for potential outliers.
 
-**Outlier Detection Methods:**
-- Statistical analysis using interquartile range (IQR) method
-- Z-score analysis for numerical features
-- Visual inspection of data distributions
+Once we detected potential outliers, we kept track of them in a dictionary. We then replace these outliers with the mean value of the respective column. Any values outside the upper and lower bounds were considered outliers. For each column with identified outliers, we replaced these values with the mean of the column.
 
-**Findings:**
-- Age feature: Range 20-84 years (realistic and appropriate)
-- Binary features: All values within expected range (0.0, 1.0)
-- No extreme outliers detected that would indicate data collection errors
+**Outlier Analysis Results:**
+The comprehensive outlier analysis revealed that the Heart Disease Risk dataset exhibits exceptional data quality with no extreme outliers detected across any features. The Age feature demonstrated a realistic clinical range from 20 to 84 years, with an IQR of 22 years (Q1: 45 years, Q3: 67 years), indicating a normal distribution of patient ages appropriate for cardiovascular risk assessment. All binary features contained only expected values (0.0 and 1.0), with no anomalous data points that would indicate data collection errors or require outlier treatment.
 
-**Outlier Treatment:**
-- No outlier removal was necessary due to realistic value ranges
-- All values represent plausible clinical scenarios
+**Clinical Validation:**
+All identified values represent plausible clinical scenarios, with no outliers requiring replacement. The dataset's realistic value ranges and absence of extreme outliers confirm its suitability for machine learning analysis without the need for outlier correction procedures.
 
 #### 2.3.3 Data Splitting
 
