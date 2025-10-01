@@ -182,7 +182,7 @@ class StatisticalAnalyzer:
         print(summary_df.to_string(index=False))
         
         # Save to CSV
-        summary_df.to_csv('statistical_summary.csv', index=False)
+        summary_df.to_csv('../analysis/statistical/statistical_summary.csv', index=False)
         print(f"\nSummary table saved as 'statistical_summary.csv'")
         
         return summary_df
@@ -207,7 +207,7 @@ class StatisticalAnalyzer:
                     fontsize=20, fontweight='bold', transform=plt.gca().transAxes)
             plt.title('Missing Values Analysis - No Missing Values', fontsize=16, fontweight='bold')
         plt.tight_layout()
-        plt.savefig('missing_values_heatmap.png', dpi=300, bbox_inches='tight')
+        plt.savefig('../results/data_quality/missing_values_heatmap.png', dpi=300, bbox_inches='tight')
         plt.show()
         
         # 2. Descriptive statistics comparison
@@ -262,7 +262,7 @@ class StatisticalAnalyzer:
             axes[1, 1].grid(True, alpha=0.3)
             
             plt.tight_layout()
-            plt.savefig('statistical_comparison.png', dpi=300, bbox_inches='tight')
+            plt.savefig('../results/statistical/statistical_comparison.png', dpi=300, bbox_inches='tight')
             plt.show()
         
         # 3. Data type distribution
@@ -271,7 +271,7 @@ class StatisticalAnalyzer:
         plt.pie(data_types.values, labels=data_types.index, autopct='%1.1f%%', startangle=90)
         plt.title('Data Type Distribution', fontsize=16, fontweight='bold')
         plt.tight_layout()
-        plt.savefig('data_type_distribution.png', dpi=300, bbox_inches='tight')
+        plt.savefig('../results/statistical/data_type_distribution.png', dpi=300, bbox_inches='tight')
         plt.show()
     
     def generate_report(self):
@@ -349,7 +349,7 @@ class StatisticalAnalyzer:
 def main():
     """Main function to run the complete statistical analysis."""
     # Initialize analyzer
-    analyzer = StatisticalAnalyzer('heart_disease_risk_dataset_earlymed.csv')
+    analyzer = StatisticalAnalyzer('../data/heart_disease_risk_dataset_earlymed.csv')
     
     # Run complete statistical analysis
     analyzer.load_data()

@@ -20,11 +20,11 @@ def analyze_duplicate_impact():
     print("=" * 70)
     
     # Load original dataset
-    df_original = pd.read_csv('heart_disease_risk_dataset_earlymed.csv')
+    df_original = pd.read_csv('../data/heart_disease_risk_dataset_earlymed.csv')
     print(f"Original dataset: {len(df_original):,} samples")
     
     # Load clean dataset (without duplicates)
-    df_clean = pd.read_csv('heart_disease_risk_dataset_clean.csv')
+    df_clean = pd.read_csv('../data/heart_disease_risk_dataset_clean.csv')
     print(f"Clean dataset: {len(df_clean):,} samples")
     print(f"Removed duplicates: {len(df_original) - len(df_clean):,} samples")
     
@@ -173,7 +173,7 @@ def analyze_duplicate_patterns():
     print("DUPLICATE PATTERN ANALYSIS")
     print(f"{'='*70}")
     
-    df = pd.read_csv('heart_disease_risk_dataset_earlymed.csv')
+    df = pd.read_csv('../data/heart_disease_risk_dataset_earlymed.csv')
     
     # Find duplicates
     duplicate_mask = df.duplicated(keep=False)

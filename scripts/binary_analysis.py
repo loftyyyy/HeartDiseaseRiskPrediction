@@ -15,7 +15,7 @@ def analyze_binary_similarities():
     print("=" * 70)
     
     # Load data
-    df = pd.read_csv('heart_disease_risk_dataset_earlymed.csv')
+    df = pd.read_csv('../data/heart_disease_risk_dataset_earlymed.csv')
     
     # Identify binary features
     binary_cols = [col for col in df.columns if col not in ['Age', 'Heart_Risk']]
@@ -152,7 +152,7 @@ def analyze_binary_similarities():
     plt.grid(True, alpha=0.3)
     
     plt.tight_layout()
-    plt.savefig('binary_feature_analysis.png', dpi=300, bbox_inches='tight')
+    plt.savefig('../results/feature_analysis/binary_feature_analysis.png', dpi=300, bbox_inches='tight')
     plt.show()
     
     return binary_stats
@@ -163,7 +163,7 @@ def explain_age_differences():
     print("WHY IS AGE DIFFERENT?")
     print(f"{'='*50}")
     
-    df = pd.read_csv('heart_disease_risk_dataset_earlymed.csv')
+    df = pd.read_csv('../data/heart_disease_risk_dataset_earlymed.csv')
     
     print("Age statistics:")
     print(f"  Mean: {df['Age'].mean():.2f} years")

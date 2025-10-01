@@ -187,7 +187,7 @@ class IQROutlierAnalyzer:
         print(summary_df.to_string(index=False))
         
         # Save to CSV
-        summary_df.to_csv('iqr_outlier_analysis_summary.csv', index=False)
+        summary_df.to_csv('../analysis/data_quality/iqr_outlier_analysis_summary.csv', index=False)
         print(f"\nSummary table saved as 'iqr_outlier_analysis_summary.csv'")
         
         return summary_df
@@ -239,7 +239,7 @@ class IQROutlierAnalyzer:
                     f'{height:.2f}%', ha='center', va='bottom')
         
         plt.tight_layout()
-        plt.savefig('iqr_outlier_analysis.png', dpi=300, bbox_inches='tight')
+        plt.savefig('../results/data_quality/iqr_outlier_analysis.png', dpi=300, bbox_inches='tight')
         plt.show()
         
         # 2. Box plots for numerical columns
@@ -268,7 +268,7 @@ class IQROutlierAnalyzer:
                 axes[i].set_visible(False)
             
             plt.tight_layout()
-            plt.savefig('iqr_boxplots.png', dpi=300, bbox_inches='tight')
+            plt.savefig('../results/data_quality/iqr_boxplots.png', dpi=300, bbox_inches='tight')
             plt.show()
     
     def generate_report(self):
@@ -331,7 +331,7 @@ class IQROutlierAnalyzer:
 def main():
     """Main function to run the complete IQR outlier analysis."""
     # Initialize analyzer
-    analyzer = IQROutlierAnalyzer('heart_disease_risk_dataset_earlymed.csv')
+    analyzer = IQROutlierAnalyzer('../data/heart_disease_risk_dataset_earlymed.csv')
     
     # Run complete IQR analysis
     analyzer.load_data()

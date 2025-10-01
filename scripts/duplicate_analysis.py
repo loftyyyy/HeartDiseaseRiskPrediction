@@ -12,7 +12,7 @@ def analyze_duplicates():
     print("=" * 60)
     
     # Load data
-    df = pd.read_csv('heart_disease_risk_dataset_earlymed.csv')
+    df = pd.read_csv('../data/heart_disease_risk_dataset_earlymed.csv')
     
     # Find duplicates
     duplicate_mask = df.duplicated(keep=False)
@@ -87,7 +87,7 @@ def create_clean_dataset():
     """Create a version without duplicates."""
     print(f"\n=== CREATING CLEAN DATASET (NO DUPLICATES) ===")
     
-    df = pd.read_csv('heart_disease_risk_dataset_earlymed.csv')
+    df = pd.read_csv('../data/heart_disease_risk_dataset_earlymed.csv')
     df_clean = df.drop_duplicates()
     
     print(f"Original dataset: {len(df):,} rows")
@@ -101,7 +101,7 @@ def create_clean_dataset():
         print(f"  Heart_Risk {target_val}: {count:,} rows ({count/len(df_clean)*100:.1f}%)")
     
     # Save clean dataset
-    df_clean.to_csv('heart_disease_risk_dataset_clean.csv', index=False)
+    df_clean.to_csv('../data/heart_disease_risk_dataset_clean.csv', index=False)
     print(f"\nClean dataset saved as 'heart_disease_risk_dataset_clean.csv'")
     
     return df_clean

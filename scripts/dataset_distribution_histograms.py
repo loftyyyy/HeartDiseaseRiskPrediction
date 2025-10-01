@@ -142,7 +142,7 @@ class DatasetDistributionVisualizer:
         plt.subplots_adjust(top=0.93, hspace=0.3, wspace=0.3)
         
         # Save the figure
-        plt.savefig('Figure1_Dataset_Distribution_Histograms.png', 
+        plt.savefig('../results/statistical/Figure1_Dataset_Distribution_Histograms.png', 
                    dpi=300, bbox_inches='tight', facecolor='white')
         print("Histogram saved as 'Figure1_Dataset_Distribution_Histograms.png'")
         
@@ -250,7 +250,7 @@ class DatasetDistributionVisualizer:
         print(stats_df.to_string(index=False, float_format='%.3f'))
         
         # Save to CSV
-        stats_df.to_csv('dataset_distribution_statistics.csv', index=False)
+        stats_df.to_csv('../analysis/visualizations/dataset_distribution_statistics.csv', index=False)
         print(f"\nStatistics table saved as 'dataset_distribution_statistics.csv'")
         
         return stats_df
@@ -314,7 +314,7 @@ class DatasetDistributionVisualizer:
 def main():
     """Main function to run the complete distribution analysis."""
     # Initialize visualizer
-    visualizer = DatasetDistributionVisualizer('heart_disease_risk_dataset_earlymed.csv')
+    visualizer = DatasetDistributionVisualizer('../data/heart_disease_risk_dataset_earlymed.csv')
     
     # Run complete distribution analysis
     visualizer.load_data()

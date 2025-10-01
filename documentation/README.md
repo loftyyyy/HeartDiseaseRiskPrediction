@@ -116,17 +116,42 @@ pip install numpy pandas scikit-learn matplotlib seaborn jupyter
 
 ### Running the Project
 
-1. **Launch Jupyter Notebook**
+1. **Run the main analysis script**
 ```bash
-jupyter notebook
+cd scripts
+python heart_disease_analysis.py
 ```
 
-2. **Open the main notebook** and run the cells sequentially to:
-   - Load and explore the dataset
-   - Preprocess the data
-   - Train different models
-   - Evaluate model performance
-   - Make predictions on new data
+2. **For quick analysis (faster)**
+```bash
+cd scripts
+python quick_analysis.py
+```
+
+3. **Run individual analysis components**
+```bash
+cd scripts
+
+# Data quality check
+python data_quality_check.py
+
+# Statistical analysis
+python statistical_analysis.py
+
+# Duplicate analysis
+python duplicate_analysis.py
+
+# Outlier analysis
+python iqr_outlier_analysis.py
+
+# Generate histograms
+python dataset_distribution_histograms.py
+```
+
+4. **View results**
+   - Check the `results/` folder for generated visualizations
+   - Check the `analysis/` folder for analysis summaries
+   - Read the research paper in `documentation/Heart_Disease_Risk_Prediction_Paper.md`
 
 ### Making Predictions
 
@@ -170,23 +195,53 @@ Feature importance analysis reveals the most significant predictors of heart dis
 HeartDiseaseRiskPrediction/
 │
 ├── data/                      # Dataset files
-│   └── heart_disease_risk_dataset_earlymed.csv  # Heart disease risk dataset
+│   ├── heart_disease_risk_dataset_earlymed.csv  # Original dataset
+│   └── heart_disease_risk_dataset_clean.csv     # Cleaned dataset (no duplicates)
 │
-├── notebooks/                 # Jupyter notebooks
-│   ├── EDA.ipynb             # Exploratory Data Analysis
-│   ├── preprocessing.ipynb    # Data preprocessing
-│   └── modeling.ipynb        # Model training and evaluation
+├── scripts/                   # Python analysis scripts
+│   ├── heart_disease_analysis.py        # Main ML pipeline
+│   ├── quick_analysis.py                # Fast analysis version
+│   ├── data_quality_check.py           # Data quality assessment
+│   ├── statistical_analysis.py         # Statistical analysis
+│   ├── duplicate_analysis.py           # Duplicate analysis
+│   ├── iqr_outlier_analysis.py         # Outlier detection
+│   └── dataset_distribution_histograms.py  # Distribution visualization
 │
-├── models/                    # Saved trained models
-│   └── heart_disease_model.pkl
+├── analysis/                  # Analysis results and summaries
+│   ├── data_quality/          # Data quality reports
+│   │   └── iqr_outlier_analysis_summary.csv
+│   ├── statistical/           # Statistical summaries
+│   │   └── statistical_summary.csv
+│   ├── visualizations/        # Visualization data
+│   │   └── dataset_distribution_statistics.csv
+│   └── model_performance/     # Model performance metrics
 │
-├── src/                       # Source code
-│   ├── preprocessing.py       # Data preprocessing functions
-│   ├── model.py              # Model training and evaluation
-│   └── utils.py              # Utility functions
+├── results/                   # Generated visualizations
+│   ├── data_quality/         # Data quality plots
+│   │   ├── missing_values_heatmap.png
+│   │   ├── iqr_outlier_analysis.png
+│   │   └── iqr_boxplots.png
+│   ├── statistical/          # Statistical visualizations
+│   │   ├── age_distribution.png
+│   │   ├── data_type_distribution.png
+│   │   ├── Figure1_Dataset_Distribution_Histograms.png
+│   │   └── statistical_comparison.png
+│   ├── model_performance/    # Model evaluation plots
+│   │   ├── confusion_matrices.png
+│   │   ├── model_comparison.png
+│   │   └── roc_curves.png
+│   └── feature_analysis/     # Feature analysis plots
+│       ├── feature_importance.png
+│       ├── feature_importance_comparison.png
+│       ├── correlation_matrix.png
+│       └── binary_feature_analysis.png
 │
-├── requirements.txt           # Project dependencies
-└── README.md                  # Project documentation
+├── documentation/             # Project documentation
+│   ├── README.md             # Project overview and setup
+│   ├── Heart_Disease_Risk_Prediction_Paper.md  # Research paper
+│   └── Heart_Disease_Analysis_Explanation.md  # Analysis explanation
+│
+└── requirements.txt           # Project dependencies
 ```
 
 ## 🎓 Learning Outcomes

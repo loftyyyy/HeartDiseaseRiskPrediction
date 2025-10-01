@@ -12,7 +12,7 @@ def comprehensive_data_quality_check():
     print("=" * 60)
     
     # Load data
-    df = pd.read_csv('heart_disease_risk_dataset_earlymed.csv')
+    df = pd.read_csv('../data/heart_disease_risk_dataset_earlymed.csv')
     print(f"Dataset shape: {df.shape}")
     print(f"Total cells: {df.shape[0] * df.shape[1]:,}")
     
