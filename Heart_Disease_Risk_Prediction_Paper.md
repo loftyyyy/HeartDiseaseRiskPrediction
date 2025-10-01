@@ -95,54 +95,23 @@ The dataset was split into two subsets - the training set and the test set. The 
 
 #### 2.4.1 Logistic Regression
 
-Logistic Regression was selected as the baseline linear model for this study due to its interpretability and proven effectiveness in binary classification tasks.
+Binary classification is an essential task in supervised machine learning, and Logistic Regression algorithm is a popular choice for this task. It works on the assumption of linear relationships between features and the log-odds of the target variable, which makes it a simple yet effective method for predicting binary outcomes in medical datasets (Hosmer Jr & Lemeshow, 2000).
 
-**Algorithm Characteristics:**
-- **Type**: Linear classification algorithm
-- **Mathematical Foundation**: Uses logistic function to model probability of binary outcomes
-- **Advantages**: 
-  - Provides interpretable coefficients
-  - Fast training and prediction
-  - Probabilistic output
-  - Well-established statistical foundation
-- **Requirements**: Feature scaling (StandardScaler applied)
-- **Hyperparameters**: 
-  - Regularization parameter (C): Tuned via grid search
-  - Penalty type: L1/L2 regularization
-  - Solver: liblinear/saga for optimal performance
+To begin with, we initialize the Logistic Regression classifier from Sklearn, which sets up the logistic regression model with regularization parameters. Next, we fit the model to the training data, which estimates the logistic function parameters for each feature to predict heart disease risk probability. The model uses the sigmoid function to transform linear combinations of features into probabilities between 0 and 1 (Bishop, 2006).
 
-**Implementation Details:**
-- Maximum iterations: 1000
-- Random state: 42 (for reproducibility)
-- Cross-validation: 5-fold for hyperparameter optimization
-- Scoring metric: ROC-AUC for model selection
+After training the model, we make predictions on the test data using the trained Logistic Regression model. Then, we evaluate the accuracy of the model's predictions by comparing the predicted labels to the actual labels. Additionally, we generate a confusion matrix to provide a visual representation of the model's performance in classifying high-risk and low-risk patients.
+
+Lastly, we generate a classification report, which includes metrics such as precision, recall, and f1-score. This report provides valuable insights into how well the model performs on each class and can help us fine-tune the model for better performance in heart disease risk prediction (Pedregosa et al., 2011).
 
 #### 2.4.2 Random Forest
 
-Random Forest was chosen as the ensemble method to capture non-linear relationships and provide robust predictions.
+Ensemble learning is an essential task in supervised machine learning, and Random Forest algorithm is a popular choice for this task. It works on the assumption of combining multiple decision trees through bootstrap aggregating, which makes it a robust yet effective method for handling complex non-linear relationships in medical datasets (Breiman, 2001).
 
-**Algorithm Characteristics:**
-- **Type**: Ensemble method using multiple decision trees
-- **Mathematical Foundation**: Bootstrap aggregating (bagging) with random feature selection
-- **Advantages**:
-  - Handles non-linear relationships naturally
-  - Provides feature importance rankings
-  - Robust to outliers and overfitting
-  - No feature scaling required
-  - Built-in cross-validation through bootstrap sampling
-- **Hyperparameters**:
-  - Number of estimators: 100-300 trees
-  - Maximum depth: 10-30 levels
-  - Minimum samples split: 2-10
-  - Minimum samples leaf: 1-4
-  - Maximum features: sqrt/log2/None
+To begin with, we initialize the Random Forest classifier from Sklearn, which sets up the ensemble model with multiple decision trees. Next, we fit the model to the training data, which builds numerous decision trees using bootstrap sampling and random feature selection to predict heart disease risk. Each tree in the forest makes independent predictions, and the final prediction is determined by majority voting (Liaw & Wiener, 2002).
 
-**Implementation Details:**
-- Bootstrap sampling: True (default)
-- Random state: 42 (for reproducibility)
-- Cross-validation: 5-fold for hyperparameter optimization
-- Scoring metric: ROC-AUC for model selection
-- Parallel processing: Enabled for faster training
+After training the model, we make predictions on the test data using the trained Random Forest model. Then, we evaluate the accuracy of the model's predictions by comparing the predicted labels to the actual labels. Additionally, we generate a confusion matrix to provide a visual representation of the model's performance in classifying high-risk and low-risk patients.
+
+Lastly, we generate a classification report, which includes metrics such as precision, recall, and f1-score. This report provides valuable insights into how well the model performs on each class and can help us fine-tune the model for better performance in heart disease risk prediction (Pedregosa et al., 2011).
 
 ### 2.5 Evaluation Metrics
 
