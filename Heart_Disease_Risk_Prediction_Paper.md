@@ -70,13 +70,15 @@ All identified values represent plausible clinical scenarios, with no outliers r
 
 #### 2.3.3 Data Splitting
 
-The dataset was strategically divided to ensure robust model evaluation while maintaining data integrity:
+To perform data splitting, we used the scikit-learn package from Python. We created a training dataset and a testing dataset out of the dataset in this method. To accomplish this division, the "train_test_split" function from the "sklearn.model_selection" package was used.
 
-**Train-Test Split Strategy:**
-- **Split ratio**: 80% training (56,000 samples) / 20% testing (14,000 samples)
-- **Stratification**: Maintained perfect class balance in both training and testing sets
-- **Random state**: 42 (ensures reproducibility across experiments)
-- **Duplicate handling**: Duplicates distributed proportionally across train/test splits
+The dataset was split into two subsets - the training set and the test set. The division was done in a standard manner, with 80% of the data being used for training and 20% for testing. This approach is commonly used in machine learning to ensure that the model is trained on a sufficiently large dataset while also having enough data to test its accuracy and performance.
+
+**Implementation Details:**
+- **Training Set**: 56,000 samples (80% of 70,000 total records)
+- **Test Set**: 14,000 samples (20% of 70,000 total records)
+- **Random State**: 42 (for reproducible results across runs)
+- **Stratification**: Enabled to maintain perfect 50/50 class balance in both sets
 
 **Validation Strategy:**
 - **Cross-validation**: 5-fold cross-validation for hyperparameter tuning
