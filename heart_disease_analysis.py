@@ -197,27 +197,41 @@ class HeartDiseaseAnalyzer:
         print(f"F1-Score: {self.results['Logistic Regression']['f1_score']:.4f}")
         print(f"ROC-AUC: {self.results['Logistic Regression']['roc_auc']:.4f}")
         
+        # Generate classification report
+        print(f"\nClassification Report - Logistic Regression:")
+        print("=" * 50)
+        print(classification_report(self.y_test, y_pred_lr, 
+                                  target_names=['No Heart Risk', 'High Heart Risk']))
+        
     def train_random_forest(self):
         """Train Random Forest model with hyperparameter tuning."""
         print("\n" + "=" * 60)
         print("RANDOM FOREST TRAINING")
         print("=" * 60)
         
-        # Define parameter grid
+        # Define optimized parameter grid (much smaller for speed)
         param_grid = {
-            'n_estimators': [100, 200, 300],
-            'max_depth': [10, 20, 30, None],
-            'min_samples_split': [2, 5, 10],
-            'min_samples_leaf': [1, 2, 4],
-            'max_features': ['sqrt', 'log2', None]
+            'n_estimators': [100, 200],  # Reduced from 3 to 2
+            'max_depth': [10, 20, None],  # Reduced from 4 to 3
+            'min_samples_split': [2, 5],  # Reduced from 3 to 2
+            'min_samples_leaf': [1, 2],   # Reduced from 3 to 2
+            'max_features': ['sqrt', 'log2']  # Reduced from 3 to 2
         }
         
-        # Grid search with cross-validation
+        # Grid search with cross-validation (reduced CV folds for speed)
         rf_model = RandomForestClassifier(random_state=42, n_jobs=-1)
-        grid_search = GridSearchCV(rf_model, param_grid, cv=5, scoring='roc_auc', n_jobs=-1)
+        grid_search = GridSearchCV(rf_model, param_grid, cv=3, scoring='roc_auc', n_jobs=-1)
         
         print("Performing hyperparameter tuning...")
+        print(f"Parameter combinations: {2*3*2*2*2} = 48 combinations")
+        print(f"With 3-fold CV: {48*3} = 144 model fits (much faster!)")
+        
+        import time
+        start_time = time.time()
         grid_search.fit(self.X_train, self.y_train)  # RF doesn't need scaling
+        end_time = time.time()
+        
+        print(f"Hyperparameter tuning completed in {end_time - start_time:.2f} seconds")
         
         # Store best model
         self.models['Random Forest'] = grid_search.best_estimator_
@@ -246,6 +260,12 @@ class HeartDiseaseAnalyzer:
         print(f"Recall: {self.results['Random Forest']['recall']:.4f}")
         print(f"F1-Score: {self.results['Random Forest']['f1_score']:.4f}")
         print(f"ROC-AUC: {self.results['Random Forest']['roc_auc']:.4f}")
+        
+        # Generate classification report
+        print(f"\nClassification Report - Random Forest:")
+        print("=" * 50)
+        print(classification_report(self.y_test, y_pred_rf, 
+                                  target_names=['No Heart Risk', 'High Heart Risk']))
         
     def compare_models(self):
         """Compare the performance of both models."""
