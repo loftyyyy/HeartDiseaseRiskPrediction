@@ -145,23 +145,15 @@ This research evaluates two machine learning algorithms to classify heart diseas
 
 ### 3.2 Detailed Performance Analysis
 
-**Accuracy Performance:**
-Accuracy is a fundamental metric that reveals the proportion of correct predictions made by a model concerning the total number of predictions [1]. Among the models tested, Random Forest achieved the highest accuracy at 99.14%, closely followed by Logistic Regression at 99.11%. This means that both models correctly classified an exceptionally high portion of all instances in the dataset, with Random Forest demonstrating a marginal advantage of 0.03 percentage points.
+The evaluation of both machine learning algorithms revealed exceptional performance across all metrics, demonstrating their effectiveness for heart disease risk prediction. Accuracy, which reveals the proportion of correct predictions made by a model concerning the total number of predictions [1], showed Random Forest achieving the highest accuracy at 99.14%, closely followed by Logistic Regression at 99.11%. This indicates that both models correctly classified an exceptionally high portion of all instances in the dataset, with Random Forest demonstrating a marginal advantage of 0.03 percentage points.
 
-**Precision Analysis:**
-Precision, which measures the reliability of a model when it makes positive predictions, exhibits minimal variations among the models [2]. Random Forest displayed a precision of 99.18%, while Logistic Regression achieved 99.13%. This means that when these models predict high heart disease risk, they are remarkably reliable, with over 99% of their positive predictions being correct. The difference of 0.05 percentage points indicates both models are highly consistent in their positive predictions.
+Precision, which measures the reliability of a model when it makes positive predictions [2], exhibited minimal variations among the models. Random Forest displayed a precision of 99.18%, while Logistic Regression achieved 99.13%, meaning that when these models predict high heart disease risk, they are remarkably reliable with over 99% of their positive predictions being correct. The difference of 0.05 percentage points indicates both models are highly consistent in their positive predictions.
 
-**Recall Performance:**
 Recall, also known as sensitivity or true positive rate, signifies the model's capability to identify actual positive instances [3]. Both Random Forest and Logistic Regression exhibit identical recall values of 99.09%, demonstrating their exceptional effectiveness in capturing actual high-risk cases. This is particularly critical in medical scenarios where missing high-risk patients can have substantial consequences for patient outcomes and healthcare management.
 
-**F1-Score Evaluation:**
-F1-score, a metric that balances precision and recall, emphasizes the trade-off between false positives and false negatives [4]. Random Forest's F1-score of 99.14% indicates its ability to achieve a harmonious equilibrium between precision and recall. Logistic Regression's F1-score of 99.11% demonstrates nearly identical performance, effectively identifying true positive instances while minimizing false positives, resulting in exceptionally high F1-scores for both models.
+F1-score, a metric that balances precision and recall and emphasizes the trade-off between false positives and false negatives [4], showed Random Forest achieving 99.14% and Logistic Regression achieving 99.11%. These exceptionally high F1-scores indicate both models' ability to achieve harmonious equilibrium between precision and recall, effectively identifying true positive instances while minimizing false positives.
 
-**ROC-AUC Analysis:**
-Both models achieved identical ROC-AUC scores of 0.9995, indicating near-perfect discrimination capability between high and low-risk patients. This exceptional performance suggests that both algorithms can effectively distinguish between the two classes with minimal overlap, making them highly suitable for clinical decision support applications.
-
-**Performance Comparison Summary:**
-The Random Forest model presents marginally superior performance across most metrics, achieving higher accuracy (99.14% vs 99.11%), precision (99.18% vs 99.13%), and F1-score (99.14% vs 99.11%). However, both models demonstrate identical recall (99.09%) and ROC-AUC (0.9995) values, indicating consistent sensitivity and discrimination ability. The performance differences are minimal, suggesting both algorithms are highly effective for heart disease risk prediction, with Random Forest having a slight edge in overall performance.
+Both models achieved identical ROC-AUC scores of 0.9995, indicating near-perfect discrimination capability between high and low-risk patients. This exceptional performance suggests that both algorithms can effectively distinguish between the two classes with minimal overlap, making them highly suitable for clinical decision support applications. The Random Forest model presents marginally superior performance across most metrics, achieving higher accuracy (99.14% vs 99.11%), precision (99.18% vs 99.13%), and F1-score (99.14% vs 99.11%). However, both models demonstrate identical recall (99.09%) and ROC-AUC (0.9995) values, indicating consistent sensitivity and discrimination ability. The performance differences are minimal, suggesting both algorithms are highly effective for heart disease risk prediction, with Random Forest having a slight edge in overall performance.
 
 **Duplicate Impact Validation:**
 To ensure the exceptional performance was not artificially inflated by duplicate records, we conducted a comprehensive comparison between the original dataset (with duplicates) and a clean dataset (without duplicates):
@@ -232,36 +224,12 @@ The comprehensive duplicate impact analysis revealed that duplicate records repr
 
 ### 4.2 Model Performance Analysis
 
-**Exceptional Performance Achievement:**
-The ROC-AUC score of 0.9995 represents near-perfect model discrimination, indicating:
-- **High-quality dataset**: Clear patterns and strong signal-to-noise ratio
-- **Well-suited features**: Comprehensive clinical and demographic predictors
-- **Effective algorithms**: Both Logistic Regression and Random Forest excel on this task
-- **Robust preprocessing**: Proper data handling and feature scaling
+The ROC-AUC score of 0.9995 represents near-perfect model discrimination, indicating exceptional performance achieved through a high-quality dataset with clear patterns and strong signal-to-noise ratio, well-suited features encompassing comprehensive clinical and demographic predictors, effective algorithms where both Logistic Regression and Random Forest excel on this task, and robust preprocessing with proper data handling and feature scaling.
 
-**Clinical Implications:**
-- **Reliable risk identification**: Models can accurately identify high-risk patients with 99%+ accuracy
-- **Minimal error rates**: False positive/negative rates are extremely low (<1%)
-- **Clinical decision support**: Suitable for integration into healthcare systems
-- **Early intervention potential**: Enables proactive patient management
+The clinical implications of these results are substantial, as both models demonstrate reliable risk identification capabilities with 99%+ accuracy, enabling accurate identification of high-risk patients. The minimal error rates, with false positive and negative rates extremely low at less than 1%, make these models highly suitable for integration into healthcare systems. Furthermore, the exceptional performance enables early intervention potential, allowing healthcare providers to implement proactive patient management strategies based on reliable risk assessments.
 
-**Comparative Analysis:**
-The performance comparison reveals nuanced differences between the two algorithms:
+The performance comparison reveals nuanced differences between the two algorithms that inform their respective applications. Random Forest demonstrates slightly superior accuracy (99.14% vs 99.11%, 0.03% difference), higher precision (99.18% vs 99.13%, 0.05% difference), and better F1-score (99.14% vs 99.11%, 0.03% difference), while its ensemble approach provides robustness through multiple decision trees. In contrast, Logistic Regression offers identical sensitivity (both models achieve 99.09% recall) and identical discrimination ability (both achieve 0.9995 ROC-AUC), combined with superior interpretability through linear coefficients that provide clear clinical insights, computational efficiency with 20x faster training and prediction, and production readiness due to smaller model size and lower computational requirements.
 
-**Random Forest Advantages:**
-- **Slightly superior accuracy**: 99.14% vs 99.11% (0.03% difference)
-- **Higher precision**: 99.18% vs 99.13% (0.05% difference)
-- **Better F1-score**: 99.14% vs 99.11% (0.03% difference)
-- **Ensemble robustness**: Multiple decision trees provide stability
-
-**Logistic Regression Advantages:**
-- **Identical sensitivity**: Both models achieve 99.09% recall
-- **Identical discrimination**: Both achieve 0.9995 ROC-AUC
-- **Superior interpretability**: Linear coefficients provide clear clinical insights
-- **Computational efficiency**: 20x faster training and prediction
-- **Production readiness**: Smaller model size and lower computational requirements
-
-**Performance Interpretation:**
 The minimal performance differences (0.03-0.05%) suggest both algorithms are highly effective for heart disease risk prediction. Random Forest demonstrates marginally superior performance across most metrics, while Logistic Regression offers identical sensitivity and discrimination ability with superior interpretability and efficiency. The choice between models should consider the specific application requirements, with Random Forest preferred for maximum accuracy and Logistic Regression for clinical interpretability and production deployment.
 
 ### 4.3 Feature Importance and Clinical Insights
