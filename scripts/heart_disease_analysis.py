@@ -336,6 +336,13 @@ class HeartDiseaseAnalyzer:
         
         for i, (model_name, metrics) in enumerate(self.results.items()):
             cm = confusion_matrix(self.y_test, metrics['predictions'])
+            print(f"\n{model_name} Confusion Matrix:")
+            print(cm)
+            print(f"Confusion Matrix Values:")
+            print(f"True Negatives: {cm[0,0]}")
+            print(f"False Positives: {cm[0,1]}")
+            print(f"False Negatives: {cm[1,0]}")
+            print(f"True Positives: {cm[1,1]}")
             sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=axes[i],
                        xticklabels=['Low Risk', 'High Risk'],
                        yticklabels=['Low Risk', 'High Risk'])
