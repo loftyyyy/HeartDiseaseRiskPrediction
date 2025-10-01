@@ -18,7 +18,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
+# Custom CSS for better styling with improved contrast
 st.markdown("""
 <style>
     .main-header {
@@ -26,40 +26,65 @@ st.markdown("""
         color: #e74c3c;
         text-align: center;
         margin-bottom: 2rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
     .metric-card {
-        background-color: #f8f9fa;
+        background-color: #ffffff;
         padding: 1rem;
         border-radius: 0.5rem;
         border-left: 4px solid #e74c3c;
         margin: 0.5rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        color: #333333;
     }
     .prediction-high {
-        background-color: #ffebee;
-        color: #c62828;
+        background-color: #ffcdd2;
+        color: #b71c1c;
         padding: 1rem;
         border-radius: 0.5rem;
-        border: 2px solid #e57373;
+        border: 2px solid #d32f2f;
         text-align: center;
         font-size: 1.2rem;
         font-weight: bold;
+        box-shadow: 0 2px 8px rgba(211, 47, 47, 0.3);
     }
     .prediction-low {
-        background-color: #e8f5e8;
-        color: #2e7d32;
+        background-color: #c8e6c9;
+        color: #1b5e20;
         padding: 1rem;
         border-radius: 0.5rem;
-        border: 2px solid #81c784;
+        border: 2px solid #388e3c;
         text-align: center;
         font-size: 1.2rem;
         font-weight: bold;
+        box-shadow: 0 2px 8px rgba(56, 142, 60, 0.3);
     }
     .info-box {
-        background-color: #e3f2fd;
+        background-color: #ffffff;
         padding: 1rem;
         border-radius: 0.5rem;
-        border-left: 4px solid #2196f3;
+        border-left: 4px solid #1976d2;
         margin: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        color: #333333;
+    }
+    .disclaimer-box {
+        background-color: #fff3e0;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid #ff9800;
+        margin: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        color: #e65100;
+    }
+    .model-info-box {
+        background-color: #f3e5f5;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        border-left: 4px solid #9c27b0;
+        margin: 1rem 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        color: #4a148c;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -246,8 +271,14 @@ def create_input_form():
 
 def make_prediction(model_data, inputs):
     """Make prediction using the trained model."""
-    # Convert inputs to DataFrame
-    input_df = pd.DataFrame([inputs])
+    # Get the expected feature order from the model
+    expected_features = model_data['feature_names']
+    
+    # Reorder inputs to match the expected feature order
+    ordered_inputs = [inputs[feature] for feature in expected_features]
+    
+    # Convert to DataFrame with correct column order
+    input_df = pd.DataFrame([ordered_inputs], columns=expected_features)
     
     # Scale the features
     scaled_input = model_data['scaler'].transform(input_df)
@@ -264,13 +295,14 @@ def display_prediction(prediction, probability):
     
     if prediction == 1:
         st.markdown('<div class="prediction-high">⚠️ HIGH HEART DISEASE RISK</div>', unsafe_allow_html=True)
-        st.markdown(f"**Risk Probability: {probability[1]*100:.1f}%**")
+        st.markdown(f"**Confidence Level: {probability[1]*100:.1f}%**")
+        st.markdown(f"*The model is {probability[1]*100:.1f}% confident this patient has HIGH heart disease risk*")
         
         st.markdown("""
         <div class="info-box">
         <h4>📋 Recommendations for High Risk:</h4>
         <ul>
-        <li>Consult with a cardiologist immediately</li>
+        <li><strong>Consult with a cardiologist immediately</strong></li>
         <li>Consider immediate medical evaluation</li>
         <li>Monitor symptoms closely</li>
         <li>Follow up with healthcare provider</li>
@@ -280,13 +312,14 @@ def display_prediction(prediction, probability):
         """, unsafe_allow_html=True)
     else:
         st.markdown('<div class="prediction-low">✅ LOW HEART DISEASE RISK</div>', unsafe_allow_html=True)
-        st.markdown(f"**Risk Probability: {probability[0]*100:.1f}%**")
+        st.markdown(f"**Confidence Level: {probability[0]*100:.1f}%**")
+        st.markdown(f"*The model is {probability[0]*100:.1f}% confident this patient has LOW heart disease risk*")
         
         st.markdown("""
         <div class="info-box">
         <h4>📋 Recommendations for Low Risk:</h4>
         <ul>
-        <li>Continue regular health checkups</li>
+        <li><strong>Continue regular health checkups</strong></li>
         <li>Maintain healthy lifestyle</li>
         <li>Monitor any new symptoms</li>
         <li>Follow preventive care guidelines</li>
@@ -301,8 +334,8 @@ def display_model_info(model_data):
     
     metrics = model_data['performance_metrics']
     st.sidebar.markdown(f"""
-    <div class="metric-card">
-    <strong>Model Performance:</strong><br>
+    <div class="model-info-box">
+    <strong>🎯 Model Performance:</strong><br>
     Accuracy: {metrics['accuracy']:.1%}<br>
     Precision: {metrics['precision']:.1%}<br>
     Recall: {metrics['recall']:.1%}<br>
@@ -313,8 +346,8 @@ def display_model_info(model_data):
     
     model_info = model_data['model_info']
     st.sidebar.markdown(f"""
-    <div class="metric-card">
-    <strong>Model Details:</strong><br>
+    <div class="model-info-box">
+    <strong>🔧 Model Details:</strong><br>
     Algorithm: {model_info['algorithm']}<br>
     Features: {model_info['features']}<br>
     Dataset: {model_info['dataset_size']}<br>
@@ -337,9 +370,9 @@ def main():
     
     # Disclaimer
     st.markdown("""
-    <div class="info-box">
+    <div class="disclaimer-box">
     <h4>⚠️ Important Disclaimer:</h4>
-    <p>This tool is for educational and research purposes only. It should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult with qualified healthcare providers for medical decisions.</p>
+    <p><strong>This tool is for educational and research purposes only.</strong> It should not be used as a substitute for professional medical advice, diagnosis, or treatment. Always consult with qualified healthcare providers for medical decisions.</p>
     </div>
     """, unsafe_allow_html=True)
     
