@@ -39,58 +39,11 @@ The dataset used in this study consists of 70,000 patient records collected for 
 
 ### 2.2 Data Analysis
 
-The dataset underwent comprehensive analysis to understand its characteristics, quality, and potential issues that could affect machine learning model performance.
+The Heart Disease Risk dataset is a CSV file with a comprehensive collection of patient health measurements and assessments regarding the risk of cardiovascular disease. Each row in the dataset represents a specific patient record, and the "Heart_Risk" column is a vital indicator of cardiovascular risk classification. The dataset includes nineteen columns that provide information on parameters such as Chest_Pain, Shortness_of_Breath, Fatigue, Palpitations, Dizziness, Swelling, Pain_Arms_Jaw_Back, Cold_Sweats_Nausea, High_BP, High_Cholesterol, Diabetes, Smoking, Obesity, Sedentary_Lifestyle, Family_History, Chronic_Stress, Gender, Age, and the crucial "Heart_Risk" variable.
 
-**Dataset Characteristics:**
-- **Total samples**: 70,000 patient records
-- **Features**: 18 clinical and lifestyle predictors
-- **Target variable**: Binary heart disease risk (0 = Low Risk, 1 = High Risk)
-- **Class distribution**: Perfectly balanced (35,000 samples per class - 50/50 split)
+As shown in Table 1, all columns demonstrate exceptional data quality with zero missing values across the entire dataset. The binary features including "Chest_Pain," "Shortness_of_Breath," "Fatigue," "Palpitations," "Dizziness," "Swelling," "Pain_Arms_Jaw_Back," "Cold_Sweats_Nausea," "High_BP," "High_Cholesterol," "Diabetes," "Smoking," "Obesity," "Sedentary_Lifestyle," "Family_History," "Chronic_Stress," and "Gender" have no missing values and are perfectly suitable for analysis. The "Age" column, representing patient age in years, also contains no missing values and provides continuous numerical data ranging from 20 to 84 years. Additionally, the "Heart_Risk" target variable has zero missing values, representing a perfectly balanced binary classification with exactly 35,000 samples (50.0%) in each class.
 
-**Feature Description:**
-1. **Chest_Pain**: Presence of chest pain (Binary: 0/1)
-2. **Shortness_of_Breath**: Difficulty breathing (Binary: 0/1)
-3. **Fatigue**: Excessive tiredness (Binary: 0/1)
-4. **Palpitations**: Irregular heartbeat sensations (Binary: 0/1)
-5. **Dizziness**: Feeling lightheaded or dizzy (Binary: 0/1)
-6. **Swelling**: Body swelling, especially legs/ankles (Binary: 0/1)
-7. **Pain_Arms_Jaw_Back**: Pain radiating to arms, jaw, or back (Binary: 0/1)
-8. **Cold_Sweats_Nausea**: Cold sweats and nausea (Binary: 0/1)
-9. **High_BP**: High blood pressure (Binary: 0/1)
-10. **High_Cholesterol**: Elevated cholesterol levels (Binary: 0/1)
-11. **Diabetes**: Diabetes diagnosis (Binary: 0/1)
-12. **Smoking**: Smoking habit (Binary: 0/1)
-13. **Obesity**: Obesity condition (Binary: 0/1)
-14. **Sedentary_Lifestyle**: Inactive lifestyle (Binary: 0/1)
-15. **Family_History**: Family history of heart disease (Binary: 0/1)
-16. **Chronic_Stress**: Chronic stress condition (Binary: 0/1)
-17. **Gender**: Gender (0 = Female, 1 = Male)
-18. **Age**: Age in years (Continuous: 20-84 years)
-
-**Data Quality Assessment:**
-- **Missing values**: 0 out of 1,330,000 total cells (0.0000%)
-- **Null values**: 0
-- **Empty strings**: 0
-- **Infinite values**: 0
-- **Data types**: All features are numerical (float64)
-- **Value ranges**: All binary features contain only expected values (0.0, 1.0)
-
-**Duplicate Analysis:**
-- **Duplicate rows**: 6,245 (8.92% of dataset)
-- **Unique duplicate patterns**: 4,717 distinct patterns
-- **Most frequent pattern**: 61-year-old male with chest pain + shortness of breath (14 occurrences)
-- **Duplicate characteristics**: 
-  - Age range: 20-84 years
-  - Gender distribution: 64% male, 36% female
-  - Heart risk distribution: 56% high-risk, 44% low-risk
-- **Impact assessment**: ROC-AUC difference <0.0001 between original and clean datasets
-- **Conclusion**: Duplicates represent legitimate patient profiles without inflating performance
-
-**Feature Distribution Analysis:**
-- **Binary features**: All 17 binary features have exactly 2 unique values (0.0, 1.0)
-- **Age distribution**: Mean 54.46 years, 65 unique values, realistic clinical range
-- **Target variable**: Perfect binary distribution (0.0, 1.0)
-- **Class balance**: Maintained across all demographic groups
+The dataset exhibits remarkable statistical consistency across binary features, with means ranging from 0.4974 to 0.5489, indicating that each condition affects approximately half of the patient population. This balanced distribution is optimal for machine learning applications as it prevents class imbalance issues. The Age feature demonstrates a realistic clinical distribution with a mean of 54.46 years and standard deviation of 16.41 years, reflecting the typical age range of patients in cardiovascular risk assessment studies. Furthermore, comprehensive duplicate analysis revealed 6,245 duplicate rows (8.92% of the dataset) representing legitimate patient profiles, with performance validation confirming that these duplicates do not artificially inflate model performance (ROC-AUC difference <0.0001).
 
 ### 2.3 Data Preprocessing
 
