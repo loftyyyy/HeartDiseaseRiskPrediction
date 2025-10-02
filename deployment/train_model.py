@@ -14,7 +14,7 @@ import os
 def load_and_prepare_data():
     """Load and prepare the dataset for training."""
     print("Loading dataset...")
-    df = pd.read_csv('../data/heart_disease_risk_dataset_earlymed.csv')
+    df = pd.read_csv('./data/heart_disease_risk_dataset_earlymed.csv')
     
     print(f"Dataset shape: {df.shape}")
     print(f"Target distribution: {df['Heart_Risk'].value_counts()}")
@@ -104,13 +104,13 @@ def save_model_and_metadata(model, feature_names, scaler, performance_metrics):
     }
     
     # Save to pickle file
-    with open('heart_disease_model.pkl', 'wb') as f:
+    with open('deployment/heart_disease_model.pkl', 'wb') as f:
         pickle.dump(model_data, f)
     
     print("Model saved as 'heart_disease_model.pkl'")
     
     # Save feature names separately for easy access
-    with open('feature_names.txt', 'w') as f:
+    with open('deployment/feature_names.txt', 'w') as f:
         for feature in feature_names:
             f.write(f"{feature}\n")
     
