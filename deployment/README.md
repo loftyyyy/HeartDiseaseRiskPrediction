@@ -2,6 +2,10 @@
 
 A user-friendly web application for predicting heart disease risk using Logistic Regression machine learning model.
 
+## 🌐 Live Demo
+
+**🚀 [Try the Application Now!](https://heart-disease-risk-prediction-ml.streamlit.app/)**
+
 ## 🚀 Quick Start
 
 ### 1. Install Dependencies
