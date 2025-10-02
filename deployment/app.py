@@ -90,12 +90,12 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 @st.cache_data
-def load_model():
-    """Load the trained model and metadata."""
+def load_models():
+    """Load the trained models and metadata."""
     try:
-        with open('deployment/heart_disease_model.pkl', 'rb') as f:
-            model_data = pickle.load(f)
-        return model_data
+        with open('deployment/heart_disease_models.pkl', 'rb') as f:
+            models_data = pickle.load(f)
+        return models_data
     except FileNotFoundError:
         st.error("Model file not found! Please run train_model.py first.")
         return None
@@ -122,6 +122,30 @@ def get_feature_descriptions():
         'Gender': 'Gender',
         'Age': 'Age'
     }
+
+def create_model_selection():
+    """Create model selection interface."""
+    st.subheader("🤖 Model Selection")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class="info-box">
+        <h4>📊 Choose Your Model:</h4>
+        <p>Select which machine learning algorithm to use for prediction:</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        model_choice = st.selectbox(
+            "Select Model",
+            options=["logistic_regression", "random_forest"],
+            format_func=lambda x: "Logistic Regression" if x == "logistic_regression" else "Random Forest",
+            help="Choose between Logistic Regression and Random Forest algorithms"
+        )
+    
+    return model_choice
 
 def create_input_form():
     """Create the input form for user data."""
@@ -269,10 +293,10 @@ def create_input_form():
     
     return inputs
 
-def make_prediction(model_data, inputs):
-    """Make prediction using the trained model."""
-    # Get the expected feature order from the model
-    expected_features = model_data['feature_names']
+def make_prediction(models_data, selected_model, inputs):
+    """Make prediction using the selected model."""
+    # Get the expected feature order from the models data
+    expected_features = models_data['feature_names']
     
     # Reorder inputs to match the expected feature order
     ordered_inputs = [inputs[feature] for feature in expected_features]
@@ -280,18 +304,33 @@ def make_prediction(model_data, inputs):
     # Convert to DataFrame with correct column order
     input_df = pd.DataFrame([ordered_inputs], columns=expected_features)
     
-    # Scale the features
-    scaled_input = model_data['scaler'].transform(input_df)
+    # Get the selected model data
+    model_data = models_data['models'][selected_model]
+    
+    # Scale the features if needed
+    if model_data['model_info']['needs_scaling']:
+        scaled_input = model_data['scaler'].transform(input_df)
+    else:
+        scaled_input = input_df
     
     # Make prediction
     prediction = model_data['model'].predict(scaled_input)[0]
     probability = model_data['model'].predict_proba(scaled_input)[0]
     
-    return prediction, probability
+    return prediction, probability, model_data
 
-def display_prediction(prediction, probability):
+def display_prediction(prediction, probability, model_data):
     """Display the prediction result."""
     st.subheader("🎯 Risk Assessment Result")
+    
+    # Show which model was used
+    algorithm = model_data['model_info']['algorithm']
+    st.markdown(f"""
+    <div class="info-box">
+    <strong>🤖 Model Used:</strong> {algorithm}<br>
+    <strong>📊 Performance:</strong> {model_data['performance_metrics']['accuracy']:.1%} accuracy
+    </div>
+    """, unsafe_allow_html=True)
     
     if prediction == 1:
         st.markdown('<div class="prediction-high">⚠️ HIGH HEART DISEASE RISK</div>', unsafe_allow_html=True)
@@ -328,30 +367,32 @@ def display_prediction(prediction, probability):
         </div>
         """, unsafe_allow_html=True)
 
-def display_model_info(model_data):
+def display_model_info(models_data):
     """Display model information."""
-    st.sidebar.subheader("📊 Model Information")
+    st.sidebar.subheader("📊 Available Models")
     
-    metrics = model_data['performance_metrics']
+    # Show both models
+    for model_name, model_data in models_data['models'].items():
+        algorithm = model_data['model_info']['algorithm']
+        metrics = model_data['performance_metrics']
+        
+        st.sidebar.markdown(f"""
+        <div class="model-info-box">
+        <strong>🤖 {algorithm}:</strong><br>
+        Accuracy: {metrics['accuracy']:.1%}<br>
+        Precision: {metrics['precision']:.1%}<br>
+        Recall: {metrics['recall']:.1%}<br>
+        F1-Score: {metrics['f1_score']:.1%}<br>
+        ROC-AUC: {metrics['roc_auc']:.3f}
+        </div>
+        """, unsafe_allow_html=True)
+    
     st.sidebar.markdown(f"""
     <div class="model-info-box">
-    <strong>🎯 Model Performance:</strong><br>
-    Accuracy: {metrics['accuracy']:.1%}<br>
-    Precision: {metrics['precision']:.1%}<br>
-    Recall: {metrics['recall']:.1%}<br>
-    F1-Score: {metrics['f1_score']:.1%}<br>
-    ROC-AUC: {metrics['roc_auc']:.3f}
-    </div>
-    """, unsafe_allow_html=True)
-    
-    model_info = model_data['model_info']
-    st.sidebar.markdown(f"""
-    <div class="model-info-box">
-    <strong>🔧 Model Details:</strong><br>
-    Algorithm: {model_info['algorithm']}<br>
-    Features: {model_info['features']}<br>
-    Dataset: {model_info['dataset_size']}<br>
-    Trained: {model_info['training_date']}
+    <strong>🔧 Dataset Info:</strong><br>
+    Features: {models_data['features']}<br>
+    Dataset: {models_data['dataset_size']}<br>
+    Trained: {models_data['training_date']}
     </div>
     """, unsafe_allow_html=True)
 
@@ -360,13 +401,13 @@ def main():
     # Header
     st.markdown('<h1 class="main-header">❤️ Heart Disease Risk Prediction</h1>', unsafe_allow_html=True)
     
-    # Load model
-    model_data = load_model()
-    if model_data is None:
+    # Load models
+    models_data = load_models()
+    if models_data is None:
         st.stop()
     
     # Display model info in sidebar
-    display_model_info(model_data)
+    display_model_info(models_data)
     
     # Disclaimer
     st.markdown("""
@@ -376,14 +417,17 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
+    # Model selection
+    selected_model = create_model_selection()
+    
     # Create input form
     inputs = create_input_form()
     
     # Prediction button
     if st.button("🔍 Assess Heart Disease Risk", type="primary", use_container_width=True):
         with st.spinner("Analyzing patient data..."):
-            prediction, probability = make_prediction(model_data, inputs)
-            display_prediction(prediction, probability)
+            prediction, probability, model_data = make_prediction(models_data, selected_model, inputs)
+            display_prediction(prediction, probability, model_data)
     
     # Additional information
     st.markdown("---")
@@ -394,7 +438,7 @@ def main():
     with col1:
         st.markdown("""
         **How it works:**
-        - Uses Logistic Regression machine learning model
+        - Choose between Logistic Regression and Random Forest
         - Trained on 70,000 patient records
         - Analyzes 18 health indicators
         - Provides risk probability assessment
@@ -403,9 +447,9 @@ def main():
     with col2:
         st.markdown("""
         **Key Features:**
-        - 99.1% accuracy on test data
+        - 99.1%+ accuracy on test data
         - Fast prediction (< 1 second)
-        - User-friendly interface
+        - Model comparison capability
         - Evidence-based recommendations
         """)
     
@@ -414,7 +458,7 @@ def main():
     st.markdown("""
     <div style="text-align: center; color: #666; margin-top: 2rem;">
     <p>Heart Disease Risk Prediction System | Machine Learning Research Project</p>
-    <p>Built with Streamlit | Powered by Logistic Regression</p>
+    <p>Built with Streamlit | Powered by Logistic Regression & Random Forest</p>
     </div>
     """, unsafe_allow_html=True)
 
