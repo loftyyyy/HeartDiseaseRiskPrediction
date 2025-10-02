@@ -93,7 +93,7 @@ st.markdown("""
 def load_model():
     """Load the trained model and metadata."""
     try:
-        with open('heart_disease_model.pkl', 'rb') as f:
+        with open('deployment/heart_disease_model.pkl', 'rb') as f:
             model_data = pickle.load(f)
         return model_data
     except FileNotFoundError:
