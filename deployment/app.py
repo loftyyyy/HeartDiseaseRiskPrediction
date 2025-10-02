@@ -328,7 +328,6 @@ def display_prediction(prediction, probability, model_data):
     st.markdown(f"""
     <div class="info-box">
     <strong>🤖 Model Used:</strong> {algorithm}<br>
-    <strong>📊 Performance:</strong> {model_data['performance_metrics']['accuracy']:.1%} accuracy
     </div>
     """, unsafe_allow_html=True)
     
