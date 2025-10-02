@@ -1,0 +1,11 @@
+Age,Gender,Chest_Pain,Shortness_of_Breath,Fatigue,Palpitations,Dizziness,Swelling,Pain_Arms_Jaw_Back,Cold_Sweats_Nausea,High_BP,High_Cholesterol,Diabetes,Smoking,Obesity,Sedentary_Lifestyle,Family_History,Chronic_Stress
+45,1,1,0,1,0,0,0,1,0,1,1,0,1,0,1,1,0
+62,0,0,1,1,1,1,1,0,1,1,1,1,0,1,0,1,1
+38,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+55,0,1,1,1,1,0,0,1,1,1,0,0,1,1,1,1,1
+29,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+71,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+33,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+48,0,0,0,1,0,0,0,0,0,1,1,0,0,0,1,0,0
+67,1,1,1,1,1,0,1,1,0,1,1,1,0,1,1,1,1
+41,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

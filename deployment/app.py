@@ -147,6 +147,88 @@ def create_model_selection():
     
     return model_choice
 
+def create_input_mode_selection():
+    """Create input mode selection (single vs batch)."""
+    st.subheader("📝 Input Mode")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class="info-box">
+        <h4>📋 Choose Input Method:</h4>
+        <p>Select how you want to input patient data:</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        input_mode = st.radio(
+            "Input Mode",
+            options=["single", "batch"],
+            format_func=lambda x: "Single Patient Form" if x == "single" else "CSV Batch Upload",
+            help="Choose between single patient form or CSV batch upload"
+        )
+    
+    return input_mode
+
+def create_csv_upload_section():
+    """Create CSV upload section."""
+    st.subheader("📁 CSV Upload")
+    
+    # Upload CSV file
+    uploaded_file = st.file_uploader(
+        "Choose a CSV file",
+        type="csv",
+        help="Upload a CSV file with patient data. The file should contain the same columns as the training data."
+    )
+    
+    if uploaded_file is not None:
+        try:
+            # Read the CSV file
+            df = pd.read_csv(uploaded_file)
+            
+            # Display basic info about the uploaded data
+            st.markdown(f"""
+            <div class="info-box">
+            <h4>📊 Uploaded Data Summary:</h4>
+            <p><strong>Records:</strong> {len(df)} patients<br>
+            <strong>Columns:</strong> {len(df.columns)} features<br>
+            <strong>File Size:</strong> {uploaded_file.size:,} bytes</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Show preview of the data
+            st.subheader("👀 Data Preview")
+            st.dataframe(df.head(10), use_container_width=True)
+            
+            # Check if required columns are present
+            expected_features = [
+                'Chest_Pain', 'Shortness_of_Breath', 'Fatigue', 'Palpitations', 'Dizziness',
+                'Swelling', 'Pain_Arms_Jaw_Back', 'Cold_Sweats_Nausea', 'High_BP', 'High_Cholesterol',
+                'Diabetes', 'Smoking', 'Obesity', 'Sedentary_Lifestyle', 'Family_History',
+                'Chronic_Stress', 'Gender', 'Age'
+            ]
+            
+            missing_columns = [col for col in expected_features if col not in df.columns]
+            
+            if missing_columns:
+                st.error(f"❌ Missing required columns: {', '.join(missing_columns)}")
+                st.markdown("""
+                **Required columns:** Chest_Pain, Shortness_of_Breath, Fatigue, Palpitations, Dizziness,
+                Swelling, Pain_Arms_Jaw_Back, Cold_Sweats_Nausea, High_BP, High_Cholesterol, Diabetes,
+                Smoking, Obesity, Sedentary_Lifestyle, Family_History, Chronic_Stress, Gender, Age
+                """)
+                return None
+            else:
+                st.success("✅ All required columns are present!")
+                return df
+                
+        except Exception as e:
+            st.error(f"❌ Error reading CSV file: {str(e)}")
+            return None
+    
+    return None
+
 def create_input_form():
     """Create the input form for user data."""
     st.subheader("📋 Patient Information")
@@ -319,6 +401,37 @@ def make_prediction(models_data, selected_model, inputs):
     
     return prediction, probability, model_data
 
+def make_batch_predictions(models_data, selected_model, df):
+    """Make predictions for multiple records using the selected model."""
+    # Get the expected feature order from the models data
+    expected_features = models_data['feature_names']
+    
+    # Ensure the DataFrame has the correct column order
+    input_df = df[expected_features].copy()
+    
+    # Get the selected model data
+    model_data = models_data['models'][selected_model]
+    
+    # Scale the features if needed
+    if model_data['model_info']['needs_scaling']:
+        scaled_input = model_data['scaler'].transform(input_df)
+    else:
+        scaled_input = input_df
+    
+    # Make predictions
+    predictions = model_data['model'].predict(scaled_input)
+    probabilities = model_data['model'].predict_proba(scaled_input)
+    
+    # Create results DataFrame
+    results_df = df.copy()
+    results_df['Prediction'] = predictions
+    results_df['Risk_Level'] = results_df['Prediction'].map({0: 'Low Risk', 1: 'High Risk'})
+    results_df['Confidence_Low_Risk'] = probabilities[:, 0]
+    results_df['Confidence_High_Risk'] = probabilities[:, 1]
+    results_df['Model_Used'] = model_data['model_info']['algorithm']
+    
+    return results_df, model_data
+
 def display_prediction(prediction, probability, model_data):
     """Display the prediction result."""
     st.subheader("🎯 Risk Assessment Result")
@@ -365,6 +478,60 @@ def display_prediction(prediction, probability, model_data):
         </ul>
         </div>
         """, unsafe_allow_html=True)
+
+def display_batch_results(results_df, model_data):
+    """Display batch prediction results."""
+    st.subheader("🎯 Batch Prediction Results")
+    
+    # Show which model was used
+    algorithm = model_data['model_info']['algorithm']
+    st.markdown(f"""
+    <div class="info-box">
+    <strong>🤖 Model Used:</strong> {algorithm}<br>
+    <strong>📊 Performance:</strong> {model_data['performance_metrics']['accuracy']:.1%} accuracy<br>
+    <strong>📈 Records Processed:</strong> {len(results_df)} patients
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Summary statistics
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        high_risk_count = len(results_df[results_df['Prediction'] == 1])
+        st.metric("High Risk Patients", high_risk_count)
+    
+    with col2:
+        low_risk_count = len(results_df[results_df['Prediction'] == 0])
+        st.metric("Low Risk Patients", low_risk_count)
+    
+    with col3:
+        avg_confidence = results_df['Confidence_High_Risk'].mean()
+        st.metric("Avg Confidence", f"{avg_confidence:.1%}")
+    
+    # Display results table
+    st.subheader("📊 Detailed Results")
+    
+    # Select columns to display
+    display_columns = ['Age', 'Gender', 'Risk_Level', 'Confidence_High_Risk', 'Confidence_Low_Risk']
+    available_columns = [col for col in display_columns if col in results_df.columns]
+    
+    st.dataframe(
+        results_df[available_columns].style.format({
+            'Confidence_High_Risk': '{:.1%}',
+            'Confidence_Low_Risk': '{:.1%}'
+        }),
+        use_container_width=True
+    )
+    
+    # Download button
+    csv_data = results_df.to_csv(index=False)
+    st.download_button(
+        label="📥 Download Results as CSV",
+        data=csv_data,
+        file_name=f"heart_disease_predictions_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+        mime="text/csv",
+        help="Download the complete prediction results including all original data and predictions"
+    )
 
 def display_model_info(models_data):
     """Display model information."""
@@ -419,14 +586,29 @@ def main():
     # Model selection
     selected_model = create_model_selection()
     
-    # Create input form
-    inputs = create_input_form()
+    # Input mode selection
+    input_mode = create_input_mode_selection()
     
-    # Prediction button
-    if st.button("🔍 Assess Heart Disease Risk", type="primary", use_container_width=True):
-        with st.spinner("Analyzing patient data..."):
-            prediction, probability, model_data = make_prediction(models_data, selected_model, inputs)
-            display_prediction(prediction, probability, model_data)
+    if input_mode == "single":
+        # Single patient input form
+        inputs = create_input_form()
+        
+        # Prediction button
+        if st.button("🔍 Assess Heart Disease Risk", type="primary", use_container_width=True):
+            with st.spinner("Analyzing patient data..."):
+                prediction, probability, model_data = make_prediction(models_data, selected_model, inputs)
+                display_prediction(prediction, probability, model_data)
+    
+    else:
+        # Batch CSV upload
+        uploaded_df = create_csv_upload_section()
+        
+        if uploaded_df is not None:
+            # Batch prediction button
+            if st.button("🔍 Analyze All Patients", type="primary", use_container_width=True):
+                with st.spinner("Analyzing patient data..."):
+                    results_df, model_data = make_batch_predictions(models_data, selected_model, uploaded_df)
+                    display_batch_results(results_df, model_data)
     
     # Additional information
     st.markdown("---")
@@ -438,17 +620,17 @@ def main():
         st.markdown("""
         **How it works:**
         - Choose between Logistic Regression and Random Forest
+        - Single patient form or CSV batch upload
         - Trained on 70,000 patient records
         - Analyzes 18 health indicators
-        - Provides risk probability assessment
         """)
     
     with col2:
         st.markdown("""
         **Key Features:**
         - 99.1%+ accuracy on test data
-        - Fast prediction (< 1 second)
-        - Model comparison capability
+        - Batch processing for multiple patients
+        - Download results as CSV
         - Evidence-based recommendations
         """)
     
