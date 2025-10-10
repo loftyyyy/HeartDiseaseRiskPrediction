@@ -73,7 +73,7 @@ HeartDiseaseRisk/
 │   ├── requirements.txt              # Dependencies
 │   └── README.md                     # Deployment guide
 ├── 📁 scripts/                       # Analysis scripts
-│   ├── heart_disease_analysis.py     # Main analysis
+│   ├── heart_disease_analysis.py     # Main analysis (THIS IS THE MAIN TRANING)
 │   ├── statistical_analysis.py       # Statistical tests
 │   ├── data_quality_check.py          # Data validation
 │   └── ...                          # Additional analyses
